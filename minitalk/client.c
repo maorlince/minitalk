@@ -6,41 +6,23 @@
 /*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:59:26 by manon             #+#    #+#             */
-/*   Updated: 2025/02/27 13:40:03 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 16:55:28 by manon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "client.h"
 
 volatile sig_atomic_t	confirmed = 0;
 
 static void	confirmation_handler(int signum)
 {
-	(void)signum;
-	confirmed = 1;
-}
-
-int	ft_atoi(char *c)
-{
-	int	i;
-	int	j;
-	int	sign;
-
-	i = 0;
-	j = 0;
-	sign = 1;
-	if (c[i] == '-')
+	if (signum == SIGUSR1)
+		confirmed = 1;
+	else if (signum == SIGUSR2)
 	{
-		sign = -1;
-		i++;
+		ft_printf("[Message sent]");
+		exit(0);
 	}
-	while (c[i] && c[i] >= '0' && c[i] <= '9')
-	{
-		j *= 10;
-		j += (c[i] - 48);
-		i++;
-	}
-	return (j * sign);
 }
 
 char	*print_bits(unsigned char letter)
@@ -72,74 +54,87 @@ char	*print_bits(unsigned char letter)
 	return (binary);
 }
 
-int	signal_send(int pid, char *binary)
+int	signal_send(int pid, char c)
 {
-	int	i;
+	// int	i;
+// 
+	// i = 0;
+	// while (binary[i])
+	// {
+		// if (binary[i] == '0')
+		// {
+			// if (kill(pid, SIGUSR1) == -1)
+				// return (-1);
+		// }
+		// else if (binary[i] == '1')
+		// {
+			// if (kill(pid, SIGUSR2) == -1)
+				// return (-1);
+		// }
+		// else
+			// return (-1);
+		// i++;
+		// confirmed = 0;
+		// while (!confirmed)
+			// usleep(10);
+	// }
+	//  return (0);
+	int    i;
 
-	i = 0;
-	while (binary[i])
-	{
-		if (binary[i] == '0')
-		{
-			if (kill(pid, SIGUSR1) == -1)
-				return (-1);
-		}
-		else if (binary[i] == '1')
-		{
-			if (kill(pid, SIGUSR2) == -1)
-				return (-1);
-		}
-		else
-			return (-1);
-		i++;
-		usleep(500);
-	}
-	return (0);
+    i = 7;
+    while (i >= 0)
+    {
+        if (((c >> i) & 1) == 0)
+        {
+            kill(pid, SIGUSR1);
+        }
+        if (((c >> i) & 1) == 1)
+        {
+            kill(pid, SIGUSR2);
+        }
+        confirmed = 0;
+        while (!confirmed)
+        {
+            usleep(50);
+        }
+        i--;
+    }
+	return 0;
 }
 
 int	main(int argc, char **argv)
 {
 	int		i;
-	char	*binary;
+	// char	*binary;
 	int		server_pid;
 
 	if (argc != 3)
 		return (1);
-	//ft_printf("🔸Generation of profil: User%d \n", getpid());
+	ft_printf("🔸Logged in as: User%d \n", getpid());
 	server_pid = ft_atoi(argv[1]);
 	signal(SIGUSR1, confirmation_handler);
+	signal(SIGUSR2, confirmation_handler);
+
 	i = 0;
 	while (argv[2][i])
 	{
-		binary = print_bits(argv[2][i]);
-		if (!binary)
-		{
-			return (1);
-		}
-		if (signal_send(server_pid, binary) == -1)
-		{
-			free(binary);
-			ft_printf("[Mauvais PID]\n");
-			return (1);
-		}
-		confirmed = 0;
-		free(binary);
-		ft_printf("wait");
-		while (!confirmed)
-			pause();
-		ft_printf("[Signal recu]\n");
+		// binary = print_bits(argv[2][i]);
+		// if (!binary)
+			// return (1);
+		if (signal_send(server_pid, argv[2][i]) == -1)
+			return (ft_printf("[Mauvais PID]\n"));
+	//confirmed = 0;
+		// free(binary);
+	//while (!confirmed)
+	//usleep(100);
 		i++;
 	}
-	binary = print_bits('\0');
-	if (signal_send(server_pid, binary) == -1)
-	{
-		free(binary);
-		return (1);
-	}
-	free(binary);
+	// binary = print_bits('\0');
+	signal_send(server_pid, 0);
+	// free(binary);
 	confirmed = 0;
 	while (!confirmed)
-		usleep(200);
+		pause();
 	ft_printf("[Message recu]\n");
 	return (EXIT_SUCCESS);
 }

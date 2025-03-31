@@ -2,10 +2,12 @@ NAME = minitalk
 
 SRV_SRC = 	server.c \
 			ft_printf.c \
-          	ft_printf_utils.c
+			ft_printf_utils.c \
+			libft.c
 CLT_SRC = 	client.c \
-          	ft_printf.c \
-          	ft_printf_utils.c
+			ft_printf.c \
+			ft_printf_utils.c \
+			libft.c
 
 SRV_OBJ := $(SRV_SRC:%.c=%.o)
 CLT_OBJ := $(CLT_SRC:%.c=%.o)
@@ -28,13 +30,11 @@ server: $(SRV_OBJ)
 
 clean:
 	rm -f $(SRV_OBJ) $(CLT_OBJ)
-	$(MAKE) clean -C
-
-fclean: clean
 	rm -f client server
-	$(MAKE) fclean -C
+	$(MAKE) clean -C
 
 re: fclean all
 
 .PHONY: all clean fclean re
 
+.PHONY: all clean

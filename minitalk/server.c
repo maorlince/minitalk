@@ -6,50 +6,110 @@
 /*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 15:59:15 by manon             #+#    #+#             */
-/*   Updated: 2025/02/27 13:34:58 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 16:30:53 by manon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "server.h"
 
-typedef struct s_stc
+void	stock_message(char c, pid_t n, siginfo_t *info)
 {
-	char	binary[9];
-	int		i;
-}	t_stc;
-static t_stc	g_stc = {.binary = {0}, .i = 0};
+	static char		*str = NULL;
+	int				j;
+	char			*temp;
 
+	j = 0;
+	if (c == '\0')
+	{
+		j = 0;
+		ft_printf(" 🔸User%d: %s\n", n, str);
+		free(str);
+		str = NULL;
+		kill(info->si_pid, SIGUSR2);
+
+	}
+	else
+	{
+		if (str != NULL)
+		{
+			temp = ft_strjoin(str, c);
+			free(str);
+			str = temp;
+			j++;
+		}
+		else
+		{
+			str = malloc(2);
+			str[j] = c;
+			j++;
+			str[j] = 0;
+		}
+	}
+}
+
+//void	stock_message(char c, pid_t n, siginfo_t *info)
+//{
+//	static char		*str;
+//	static int		j;
+//	char			*temp;
+//	char			c_2[2];
+//
+//	str = NULL;
+//	j = 0;
+//	// str[j] = c;
+//	write(1, "ok", 2);
+//	if (c == '\0')
+//	{
+//		ft_printf("ok1\n");
+//		j = 0;
+//		ft_printf(" 🔸User%d: %s\n", n, str);
+//		free(str);
+//		kill(info->si_pid, SIGUSR2);
+//	}
+//	else
+//	{
+//		ft_printf("ok2\n");
+//		if (!str)
+//		{
+//			c_2[0] = c;
+//			c_2[1] = 0;
+//			str = ft_strdup(c_2);
+//		}
+//		else
+//		{
+//			temp = ft_strjoin(str, c);
+//			free(str);
+//			str = temp;
+//		}
+//		j++;
+//	}
+//}
 
 void	signal_receive(int signum, siginfo_t *info, void *context)
 {
-	char	c;
+	static char	binary[9];
+	static int	i = 0;
+	char		c;
+
 	(void)context;
-	//ft_printf("🔸User%d :", info->si_pid);
 	if (signum == SIGUSR1)
 	{
-		g_stc.binary[g_stc.i] = '0';
-		g_stc.i++;
+		binary[i] = '0';
+		i++;
 	}
 	else if (signum == SIGUSR2)
 	{
-		g_stc.binary[g_stc.i] = '1';
-		g_stc.i++;
+		binary[i] = '1';
+		i++;
 	}
-	if (g_stc.i == 8)
+	if (i == 8)
 	{
-		g_stc.binary[g_stc.i] = 0;
-		ft_printf("%c", deprint_bits((char *)g_stc.binary));
-		c = deprint_bits((char *)g_stc.binary);
-		if(c == '\0')
-			ft_printf("\n");
-		g_stc.i = 0;
-		usleep(500);
-		if (kill(info->si_pid, SIGUSR1) == -1)
-		{
-			ft_printf("ERROOR");
-			exit (EXIT_FAILURE);
-		}
+		binary[++i] = 0;
+		c = deprint_bits(binary);
+		stock_message(c, info->si_pid, info);
+		i = 0;
 	}
+	kill(info->si_pid, SIGUSR1);
 }
 
 unsigned char	deprint_bits(char *binary)
@@ -64,38 +124,31 @@ unsigned char	deprint_bits(char *binary)
 	while (j > 0 && binary[i])
 	{
 		if (binary[i] == '1')
-		{
 			letter += j;
-		}
 		i++;
 		j /= 2;
 	}
 	return (letter);
 }
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	struct sigaction	sa_usr1;
-	struct sigaction	sa_usr2;
+	struct sigaction	sig;
 
-	ft_printf("🔶 Salon: %d 🔶\n\n 🔹User41004: B!3nv3nu3 5ur M!n!t4|k🤖\n", getpid());
-	sa_usr1.sa_flags = SA_SIGINFO;
-	sa_usr1.sa_sigaction = signal_receive;
-	sigemptyset(&sa_usr1.sa_mask);
-	if (sigaction(SIGUSR1, &sa_usr1, NULL) == -1)
-	{
-		ft_printf("Erreur avec SIGUSR1\n");
+	(void)argv;
+	if (argc != 1)
 		return (1);
-	}
-	sa_usr2.sa_flags = SA_SIGINFO;
-	sa_usr2.sa_sigaction = signal_receive;
-	sigemptyset(&sa_usr2.sa_mask);
-	if (sigaction(SIGUSR2, &sa_usr2, NULL) == -1)
-	{
-		ft_printf("Erreur avec SIGUSR2\n");
-		return (1);
-	}
+	ft_printf("🔶 Salon: %d 🔶\n\n 🔹User41004: W31c0m3 0n M!n!t41k🤖\n", getpid());
+	sig.sa_flags = SA_SIGINFO;
+	//ft_printf("[Signal entrant]\n");
+	sig.sa_sigaction = signal_receive;
+	//ft_printf("[Reception de signal]\n");
+	sigemptyset(&sig.sa_mask);
+	sigaction(SIGUSR1, &sig, NULL);
+	sigaction(SIGUSR2, &sig, NULL);
+	//ft_printf("[En pause]\n");
 	while (1)
 		pause();
+	ft_printf("[Reception du message..]\n");
 	return (EXIT_SUCCESS);
 }

@@ -1,21 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/04 17:24:54 by manon             #+#    #+#             */
-/*   Updated: 2025/02/27 12:09:29 by manon            ###   ########.fr       */
+/*   Created: 2025/03/25 22:37:44 by manon             #+#    #+#             */
+/*   Updated: 2025/03/28 19:47:15 by manon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef SERVER_H
+# define SERVER_H
 // basique
+# define _POSIX_SOURCE 1
+# define _POSIX_C_SOURCE 199309L
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <string.h>
 // printf
 # include <stdarg.h>
 // minitalk
@@ -31,13 +34,16 @@ int				ft_putchar(char c);
 int				ft_puthexa(unsigned int n, char format);
 int				ft_putnbr(int n);
 int				ft_putstr(const char *s);
+
+//libft
+int				ft_atoi(char *c);
+char			*ft_strjoin(char const *s1, char s2);
+void			*ft_calloc(size_t elementCount, size_t elementSize);
+char			*ft_strdup(const char *src);
+
 // server
 void			signal_receive(int signum, siginfo_t *info, void *context);
 unsigned char	deprint_bits(char *binary);
-
-// client
-int				ft_atoi(char *c);
-char			*print_bits(unsigned char letter);
-int				signal_send(int pid, char *binary);
+void			stock_message(char c, pid_t n, siginfo_t *info);
 
 #endif
