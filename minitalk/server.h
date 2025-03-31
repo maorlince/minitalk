@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mlemerci <mlemerci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 22:37:44 by manon             #+#    #+#             */
-/*   Updated: 2025/03/28 19:47:15 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 18:32:17 by mlemerci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int				ft_putstr(const char *s);
 //libft
 int				ft_atoi(char *c);
 char			*ft_strjoin(char const *s1, char s2);
-void			*ft_calloc(size_t elementCount, size_t elementSize);
 char			*ft_strdup(const char *src);
 
 // server

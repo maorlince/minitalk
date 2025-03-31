@@ -31,10 +31,7 @@ server: $(SRV_OBJ)
 clean:
 	rm -f $(SRV_OBJ) $(CLT_OBJ)
 	rm -f client server
-	$(MAKE) clean -C
 
 re: fclean all
 
 .PHONY: all clean fclean re
-
-.PHONY: all clean

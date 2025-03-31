@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mlemerci <mlemerci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 22:37:39 by manon             #+#    #+#             */
-/*   Updated: 2025/03/31 16:53:40 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 18:32:01 by mlemerci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ int				ft_putstr(const char *s);
 //libft
 int				ft_atoi(char *c);
 char			*ft_strjoin(char const *s1, char s2);
-void			*ft_calloc(size_t elementCount, size_t elementSize);
 
 // client
-char			*print_bits(unsigned char letter);
-int				signal_send(int pid, char c);
+int				signal_sent(int pid, char c);
 
 #endif

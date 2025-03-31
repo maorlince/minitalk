@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mlemerci <mlemerci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 15:53:53 by manon             #+#    #+#             */
-/*   Updated: 2025/03/31 16:38:53 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 18:34:01 by mlemerci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "client.h"
-
 
 int	ft_atoi(char *c)
 {

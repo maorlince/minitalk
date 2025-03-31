@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mlemerci <mlemerci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:24:10 by manon             #+#    #+#             */
-/*   Updated: 2025/02/18 19:06:23 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 18:37:25 by mlemerci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "server.h"
+#include "client.h"
 
 int	ft_puthexadrr(unsigned long long n)
 {

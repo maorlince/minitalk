@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: manon <manon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mlemerci <mlemerci@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 17:26:34 by manon             #+#    #+#             */
-/*   Updated: 2025/02/18 19:07:12 by manon            ###   ########.fr       */
+/*   Updated: 2025/03/31 18:37:16 by mlemerci         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "server.h"
+#include "client.h"
 
 int	ft_putchar(char c)
 {
